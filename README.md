@@ -2,7 +2,7 @@
 
 MemorizePi.py estimates a decoder transformer that memorizes sequences of Pi.
 
-NormalPi.py tests to see if GPT can find any evidence that Pi is not a normal number. 
+NormalPi.py estimates a bigger transformer to see if GPT can find any evidence that Pi is not a normal number.
 
 For this analysis I used data from: https://pi2e.ch/blog/2017/03/10/pi-digits-download/#download
 
