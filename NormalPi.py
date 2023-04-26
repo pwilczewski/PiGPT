@@ -5,7 +5,6 @@ from torch.utils.data import Dataset, DataLoader
 from DecoderTransformer import GPT, GPTConfig
 
 # A number is said to be normal in base b if, for every positive integer n, all possible strings n digits long have density b−n
-# source: https://pi2e.ch/blog/2017/03/10/pi-digits-download/#download
 with open('Pi - dec.txt') as f:
     digits = [int(i) for i in f.read() if i!="."] # load 1 billion digits of pi
 
