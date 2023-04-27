@@ -7,7 +7,7 @@ from DecoderTransformer import GPT, GPTConfig
 
 # A number is said to be normal in base b if, for every positive integer n, all possible strings n digits long have density b−n
 vocab_size = 10 # using pi in base 10
-context_length = 5 # modeling context with length 10
+context_length = 4 # modeling context with length 4 to avoid memorization
 
 torch.manual_seed(85571)
 config = GPTConfig(
@@ -15,7 +15,7 @@ config = GPTConfig(
     vocab_size = vocab_size,
     n_layer = 2,
     n_head = 2,
-    n_embd = 16,
+    n_embd = 8,
     bias = False,
 )
 
@@ -51,8 +51,8 @@ class PiData(Dataset):
         return x, y
 
 # do I need to construct my dataset on the fly?
-PiDataset = PiData(context_length, digits_to_train=1e5)
-train_dataloader = DataLoader(PiDataset, batch_size=2048, shuffle=True)
+PiDataset = PiData(context_length, digits_to_train=1e6)
+train_dataloader = DataLoader(PiDataset, batch_size=4096, shuffle=True)
 
 for e in range(400):
     # train the GPT for some number of iterations
