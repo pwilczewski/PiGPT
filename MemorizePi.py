@@ -39,7 +39,8 @@ config = GPTConfig(
 device = torch.device("cuda:0")
 torch.cuda.set_device(device)
 gpt = GPT(config).cuda()
-optimizer = torch.optim.AdamW(gpt.parameters(), lr=1e-3, weight_decay=1e-1)
+# optimizer = torch.optim.AdamW(gpt.parameters(), lr=1e-3, weight_decay=1e-1)
+optimizer = torch.optim.AdamW(gpt.parameters())
 
 class PiData(Dataset):
     def __init__(self, X, Y):
@@ -58,7 +59,7 @@ PiDataset = PiData(X, Y)
 train_dataloader = DataLoader(PiDataset, batch_size=128, shuffle=True)
 
 # Train transformer to memorize digits of pi
-for e in range(500):
+for e in range(400):
     for i, data in enumerate(train_dataloader):
         X, Y = data
         optimizer.zero_grad()
@@ -68,7 +69,7 @@ for e in range(500):
         loss = F.cross_entropy(logits, Y)
         loss.backward()
         optimizer.step()
-        print(i, loss.item())
+        print(e, loss.item())
 
 # Test if memorization was successful
 pi = pi_digits[0:10]
