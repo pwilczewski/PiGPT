@@ -5,17 +5,16 @@ from torch.nn import functional as F
 from torch.utils.data import Dataset, DataLoader
 from DecoderTransformer import GPT, GPTConfig
 
-# A number is said to be normal in base b if, for every positive integer n, all possible strings n digits long have density b−n
-vocab_size = 10 # using pi in base 10
-context_length = 4 # modeling context with length 4 to avoid memorization
+vocab_size = 10
+context_length = int(4)
 
 torch.manual_seed(85571)
 config = GPTConfig(
     block_size = context_length,
     vocab_size = vocab_size,
-    n_layer = 2,
-    n_head = 2,
-    n_embd = 8,
+    n_layer = 4,
+    n_head = 4,
+    n_embd = 16,
     bias = False,
 )
 
@@ -42,7 +41,7 @@ class PiData(Dataset):
         self.digits_to_train = digits_to_train
 
     def __len__(self):
-        return int(self.digits_to_train - self.context_length - 1)
+        return self.digits_to_train - self.context_length - 1
 
     def __getitem__(self, index):
         data = read_pi_from_file(index, self.context_length)
@@ -50,8 +49,7 @@ class PiData(Dataset):
         y = torch.tensor(data[-1],dtype=torch.long)
         return x, y
 
-# do I need to construct my dataset on the fly?
-PiDataset = PiData(context_length, digits_to_train=1e6)
+PiDataset = PiData(context_length, digits_to_train=int(1e9))
 train_dataloader = DataLoader(PiDataset, batch_size=4096, shuffle=True)
 
 for e in range(400):
