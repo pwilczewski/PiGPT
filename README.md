@@ -2,7 +2,7 @@
 In _MemorizePi.py_ I estimate a decoder transformer that memorizes sequences of Pi. When the number of model parameters >> sequence length the model is able to memorize digits to arbitrary precision. After training the model for 400 epochs I'm able to exactly reproduce the first 1,280 digits of Pi.
 
 ## Testing if Pi is a normal number
-In the _NormalPi - Memory.py_ file I estimate a decoder transformer to see if I can find any evidence that Pi is not a normal number. A number is normal in base 10 if for every positive integer n, all possible strings n digits long have density 1/n^{10}. Using 1 million digits of Pi, a context length of 4 and a model with 12,800 parameters I train the model for 400 epochs. Using this model I test if given 4 digits the 5th digit can be predicted. The trained model accuracy on a test sample of 100,000 digits is 0.0993 using greedy selection - essentially no different from random chance.
+In the _NormalPi - Memory.py_ file I estimate a decoder transformer to see if I can find any evidence that Pi is not a normal number. A number is normal in base 10 if for every positive integer n, all possible strings n digits long have density 1/n^10. Using 1 million digits of Pi, a context length of 4 and a model with 12,800 parameters I train the model for 400 epochs. Using this model I test if given 4 digits the 5th digit can be predicted. The trained model accuracy on a test sample of 100,000 digits is 0.0993 using greedy selection - essentially no different from random chance.
 
 ## Data
 For this analysis I used the digits of Pi from: https://pi2e.ch/blog/2017/03/10/pi-digits-download/#download
