@@ -4,6 +4,10 @@ In _MemorizePi.py_ I estimate a decoder transformer that memorizes sequences of 
 ## Testing if Pi is a normal number
 In the _NormalPi - Memory.py_ file I estimate a decoder transformer to see if I can find any evidence that Pi is not a normal number. A number is normal in base 10 if for every positive integer n, all possible strings n digits long have density 1/n^10. Using 1 million digits of Pi, a context length of 4 and a model with 12,800 parameters I train the model for 400 epochs. Using this model I test if given 4 digits the 5th digit can be predicted. The trained model accuracy on a test sample of 100,000 digits is 0.0993 using greedy selection - essentially no different from random chance.
 
+Finally using the trained model I predicted the fifth digit for all sequences between 0000 and 9999. If I use greedy selection to predict the fifth digit, the distribution of predictions is quite uneven. The most commonly predicted digit (3) is predicted three times more frequently as the least commonly predicted digit (0).
+
+![fifth_digit](https://user-images.githubusercontent.com/9024799/236638205-bc230dbd-42db-49b4-bb01-d853738848e7.png)
+
 ## Data
 For this analysis I used the digits of Pi from: https://pi2e.ch/blog/2017/03/10/pi-digits-download/#download
 
