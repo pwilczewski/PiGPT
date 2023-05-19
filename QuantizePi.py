@@ -1,8 +1,8 @@
 
 import torch
+import torch.nn as nn
 from torch.nn import functional as F
 from torch.utils.data import Dataset, DataLoader
-from DecoderTransformer import GPT, GPTConfig
 import numpy as np
 
 n_digits_to_memorize = 1280
@@ -26,21 +26,18 @@ X = torch.tensor(X, dtype=torch.long)
 Y = torch.tensor(Y, dtype=torch.long)
 print(X.shape, Y.shape)
 
-torch.manual_seed(196)
-config = GPTConfig(
-    block_size = context_length,
-    vocab_size = vocab_size,
-    n_layer = 4,
-    n_head = 4,
-    n_embd = 16,
-    bias = False,
-)
+model = nn.Sequential(
+    nn.Linear(1, 64),
+    nn.ReLU(),
+    nn.Linear(64, 64),
+    nn.ReLU(),
+    nn.Linear(64, 10)
+).cuda()
 
+torch.manual_seed(196)
 device = torch.device("cuda:0")
 torch.cuda.set_device(device)
-gpt = GPT(config).cuda()
-# optimizer = torch.optim.AdamW(gpt.parameters(), lr=1e-3, weight_decay=1e-1)
-optimizer = torch.optim.AdamW(gpt.parameters())
+optimizer = torch.optim.AdamW(model.parameters())
 
 class PiData(Dataset):
     def __init__(self, X, Y):
@@ -65,7 +62,7 @@ for e in range(400):
         optimizer.zero_grad()
         X = X.to(device)
         Y = Y.to(device)
-        logits = gpt(X)
+        logits = model(X)
         loss = F.cross_entropy(logits, Y)
         loss.backward()
         optimizer.step()
@@ -77,7 +74,7 @@ pi_pred = pi.copy()
 with torch.no_grad():
     for k in range(1270):
         x = torch.tensor(pi, dtype=torch.long)[None, ...].to(device)
-        logits = gpt(x)
+        logits = model(x)
         probs = F.softmax(logits, dim=1)
         n = torch.argmax(probs).item()
         pi = pi[1:] + [n]
